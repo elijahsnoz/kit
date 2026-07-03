@@ -136,7 +136,22 @@ export function CinematicVideo({
     const video = videoRef.current
     if (!wrap || !video) return
 
-    // Play only while in view.
+    // Start buffering the clip *before* it reaches the screen, so it can play
+    // smoothly the instant it arrives instead of stalling on scroll-in. We keep
+    // preload="metadata" in markup (so nothing downloads on first paint) and
+    // only upgrade to a full fetch once the clip is near the viewport.
+    const preloader = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && video.preload !== 'auto') {
+          video.preload = 'auto'
+          video.load()
+        }
+      },
+      { rootMargin: '600px 0px' },
+    )
+    preloader.observe(wrap)
+
+    // Play only while actually in view.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) video.play().catch(() => {})
@@ -146,7 +161,11 @@ export function CinematicVideo({
     )
     io.observe(wrap)
 
-    if (reduce) return () => io.disconnect()
+    if (reduce)
+      return () => {
+        preloader.disconnect()
+        io.disconnect()
+      }
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -164,6 +183,7 @@ export function CinematicVideo({
     }, wrap)
 
     return () => {
+      preloader.disconnect()
       io.disconnect()
       ctx.revert()
     }
