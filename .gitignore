@@ -1,0 +1,19 @@
+# dependencies / build output
+app/node_modules/
+app/dist/
+app/dist-tsnode/
+node_modules/
+
+# editor / OS
+.DS_Store
+*.local
+.vite
+
+# Raw camera originals — kept on disk as source, not needed in the app or repo.
+# The web-ready versions live in app/public/media/.
+/IMG_*.HEIC
+/IMG_*.MOV
+/*.JPG
+/kit pic .PNG
+/media/
+app/public/Visit.MOV
