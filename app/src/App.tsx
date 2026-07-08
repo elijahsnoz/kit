@@ -111,6 +111,23 @@ export default function App() {
         <div ref={closing.ref}>
           <FinalScene />
         </div>
+
+        {/* After the silence — a whisper, should she ever want to make one too.
+            Deliberately faint, and only reached long after the ending. */}
+        <motion.footer
+          className="relative z-10 flex justify-center pb-[16vh]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 2.8, ease: 'easeInOut' }}
+        >
+          <a
+            href="#/create"
+            className="font-sans text-[0.55rem] uppercase tracking-widest2 text-white/20 transition-colors duration-700 hover:text-gold-soft/70"
+          >
+            create a gift like this
+          </a>
+        </motion.footer>
       </main>
 
       {/* Optional, off-by-default ambient — silence stays the soundtrack */}

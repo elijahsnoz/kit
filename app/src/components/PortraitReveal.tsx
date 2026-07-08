@@ -11,9 +11,13 @@ import { usePointerParallax, useReducedMotion } from '../lib/hooks'
 export default function PortraitReveal({
   small = false,
   onRevealed,
+  src = './media/kit-portrait.png',
+  alt = 'Kit, smiling — the evening this was made for her.',
 }: {
   small?: boolean
   onRevealed?: () => void
+  src?: string
+  alt?: string
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLDivElement>(null)
@@ -113,8 +117,8 @@ export default function PortraitReveal({
         }
       >
         <img
-          src="./media/kit-portrait.png"
-          alt="Kit, smiling — the evening this was made for her."
+          src={src}
+          alt={alt}
           className="h-full w-full select-none object-cover"
           draggable={false}
         />

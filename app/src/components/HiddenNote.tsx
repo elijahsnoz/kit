@@ -9,9 +9,11 @@ import { HIDDEN_NOTE } from '../lib/content'
 export default function HiddenNote({
   open,
   onClose,
+  note = HIDDEN_NOTE,
 }: {
   open: boolean
   onClose: () => void
+  note?: string[]
 }) {
   return (
     <AnimatePresence>
@@ -25,11 +27,11 @@ export default function HiddenNote({
           onClick={onClose}
         >
           <div className="flex max-w-2xl flex-col items-center gap-8 text-center">
-            {HIDDEN_NOTE.map((line, i) => (
+            {note.map((line, i) => (
               <motion.p
                 key={i}
                 className={
-                  i === HIDDEN_NOTE.length - 1
+                  i === note.length - 1
                     ? 'font-hand text-[clamp(2rem,6vw,3.2rem)] font-medium text-gold-soft/85'
                     : 'font-hand text-[clamp(1.7rem,4.8vw,2.6rem)] font-normal leading-snug text-white/85'
                 }
@@ -46,7 +48,7 @@ export default function HiddenNote({
             className="pointer-events-none absolute bottom-10 font-sans text-[0.6rem] tracking-widest2 text-white/25"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 2, delay: 1 + HIDDEN_NOTE.length * 1.8 + 1 }}
+            transition={{ duration: 2, delay: 1 + note.length * 1.8 + 1 }}
           >
             touch to fold it away
           </motion.span>

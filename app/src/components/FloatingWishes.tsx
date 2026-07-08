@@ -53,14 +53,21 @@ let uid = 0
 export default function FloatingWishes({
   count = 7,
   onSecret,
+  words,
 }: {
   count?: number
   onSecret?: () => void
+  words?: string[]
 }) {
   const reduce = useReducedMotion()
   const [narrow, setNarrow] = useState(false)
   const [bubbles, setBubbles] = useState<Bubble[]>([])
-  const wordPool = useRef<string[]>(shuffle(WISH_WORDS))
+  // Custom gifts pass their own words; Kit's original falls back to the shared set.
+  const fullWords = words && words.length ? words : WISH_WORDS
+  const shortWords = words && words.length
+    ? words.filter((w) => !w.includes(' ')).concat(words).slice(0, 9)
+    : SHORT_WISHES
+  const wordPool = useRef<string[]>(shuffle(fullWords))
   const poolIdx = useRef(0)
   const [bursts, setBursts] = useState<{ id: number; x: number; y: number }[]>([])
 
@@ -75,12 +82,13 @@ export default function FloatingWishes({
   const nextWord = useCallback(() => {
     // On phones, only the short, single-word wishes — the longer phrases would
     // clip against a narrow screen. On wider screens, the full set.
-    const pool = narrow ? SHORT_WISHES : WISH_WORDS
+    const pool = narrow ? shortWords : fullWords
     if (poolIdx.current >= wordPool.current.length) {
       wordPool.current = shuffle(pool)
       poolIdx.current = 0
     }
     return wordPool.current[poolIdx.current++]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [narrow])
 
   const spawn = useCallback((): Bubble => {
@@ -98,7 +106,7 @@ export default function FloatingWishes({
   useEffect(() => {
     // Reset the word pool so the layout switch immediately draws from the
     // correct set (short words on phones, full phrases on wider screens).
-    wordPool.current = shuffle(narrow ? SHORT_WISHES : WISH_WORDS)
+    wordPool.current = shuffle(narrow ? shortWords : fullWords)
     poolIdx.current = 0
     const effective = narrow ? Math.min(count, 4) : count
     const initial = Array.from({ length: effective }, () => spawn())
