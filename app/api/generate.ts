@@ -3,7 +3,9 @@
 // 501 so the client falls back to its local (template) generator — the product
 // still works, just without AI-written words.
 
-import { generateGiftContent, type GiftInputCore } from './_gift-core'
+// NOTE: explicit .js extension is required — this file runs as an ESM module
+// on Vercel's Node runtime, which does not resolve extensionless relatives.
+import { generateGiftContent, type GiftInputCore } from './_gift-core.js'
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
