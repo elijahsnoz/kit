@@ -251,7 +251,7 @@ function Result({
           For {gift.recipient}.
         </p>
         <p className="mt-1 font-sans text-[0.62rem] uppercase tracking-widest2 text-white/40">
-          {usedAI ? 'written just now' : 'composed locally · add an API key for AI-written words'}
+          {usedAI ? 'written just now' : 'composed just now, on your device'}
         </p>
       </div>
 
