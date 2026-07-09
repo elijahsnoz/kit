@@ -23,18 +23,16 @@ function useHash() {
  * A tiny hash router — no dependencies. Everything a shared gift needs travels
  * in the hash, so a static host is enough.
  *
- *   #/ (default)  → the product homepage (with the Create button)
- *   #/make        → the product homepage (explicit alias)
+ *   #/ (default)  → Kit's original experience — the home page is HERS
+ *   #/kit         → Kit's experience (explicit alias)
+ *   #/make        → the product homepage (with the Create button)
  *   #/create      → the gift maker
- *   #/kit         → Kit's original experience, untouched
  *   #/g/<data>    → a gift, decoded straight from the link
  */
 export default function Root() {
   const hash = useHash()
 
-  // Kit's gift lives here now — the experience itself is unchanged.
-  if (hash.startsWith('#/kit')) return <App />
-
+  if (hash.startsWith('#/make')) return <Landing />
   if (hash.startsWith('#/create')) return <Creator />
 
   if (hash.startsWith('#/g/')) {
@@ -46,8 +44,8 @@ export default function Root() {
   // A convenience route for showing the product with real content.
   if (hash.startsWith('#/example')) return <GiftExperience gift={EXAMPLE_GIFT} />
 
-  // Default and #/make both show the product homepage.
-  return <Landing />
+  // Default and #/kit both play Kit's gift, exactly as she knows it.
+  return <App />
 }
 
 function BrokenLink() {
